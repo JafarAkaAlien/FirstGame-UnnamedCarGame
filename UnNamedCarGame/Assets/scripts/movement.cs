@@ -15,16 +15,21 @@ public class movement : MonoBehaviour
 
     void Update()
     {
+        if(playerSpeed!=0)
         transform.Rotate(0, Input.GetAxis("Horizontal")*rotateSpeed*Time.deltaTime, 0);
         playerVelo = transform.TransformDirection(Vector3.forward);
         float move = Input.GetAxis("Vertical");
         if(playerSpeed>0.1 && move<=0)
         {
-            speedUp(25 * Time.deltaTime*-1);
+            if (move == 0)
+                speedUp(10 * Time.deltaTime*-1);
+            else speedUp(40 * Time.deltaTime*-1);
         }
         else if(playerSpeed<-0.1 && move >= 0)
         {
-            speedUp(25 * Time.deltaTime);
+            if (move == 0)
+                speedUp(10 * Time.deltaTime);
+            else speedUp(40 * Time.deltaTime);
         }
         if (move > 0 && playerSpeed<100)
         {
