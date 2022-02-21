@@ -1,0 +1,7 @@
+This Page Is For Ideas.
+1. Creating Basic Car mechanics, movement scripting, wheels, rigidbody, collision etc. (in proggress 10%)
+2. Environment: Mars Ambiance. place that for living like a earth in kind of big glass and outside, deadly places.
+3. Sounds. audio effects etc. 
+4. Story .. We have to carry something to somewhere and then we get idea what we are carrying and why.
+5. Touchscreen and making smooth for phones. 
+6. Levels (Might be final.. between two army we have to carry and avoid of droppig shells ).
