@@ -26,21 +26,29 @@ public class ADCarMove : MonoBehaviour
     private void FixedUpdate()
     {
         /// motor:
-        speed = car.velocity.magnitude;
+        float brok=30000;
+        bool brake = false;
+        speed = car.velocity.z;
         float qaz = Input.GetAxis("Vertical");
         float don = Input.GetAxis("Horizontal");
         float currentTorque = maxMotorTorque;
 
-        if ((speed>0 && qaz<0) || (speed < 0 && qaz > 0))
-        {
-            currentTorque = maxMotorTorque * 10;
-        }
+        //if (Input.GetKeyDown("space"))
+        //{
+        //    brake = true;
+        //}
+        //else if (Input.GetKeyUp("space"))
+        //{
+        //    brake = false;
+        //}
+        brake = Input.GetKey("space");
+        
 
 
 
 
 
-        float motor = currentTorque * Input.GetAxis("Vertical");
+        float motor = currentTorque * qaz;
         float steer = maxSteerAngle * Input.GetAxis("Horizontal");
 
         foreach (Axinfo t in teker)
@@ -55,6 +63,17 @@ public class ADCarMove : MonoBehaviour
                 t.leftWheel.steerAngle = steer;
                 t.rightWheel.steerAngle = steer;
             }
+            if (t.brik && brake)
+            {
+                t.leftWheel.brakeTorque = brok ;
+                t.rightWheel.brakeTorque = brok;
+            }
+            else
+            {
+                t.rightWheel.brakeTorque = 0;
+                t.leftWheel.brakeTorque = 0;
+            }
+            
             ApplyRotation(t.leftWheel, t.leftReal.transform);
             ApplyRotation(t.rightWheel, t.rightReal.transform);
         }
@@ -83,4 +102,5 @@ public class Axinfo
     public GameObject rightReal;
     public bool motor;
     public bool steer;
+    public bool brik;
 }
