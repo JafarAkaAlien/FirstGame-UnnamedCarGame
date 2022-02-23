@@ -11,8 +11,8 @@ public class ADCarMove : MonoBehaviour
     public float speed;
 
     public List<Axinfo> teker;
-    public float maxMotorTorque = 10;
-    public float maxSteerAngle = 30;
+    public float maxMotorTorque = 800;
+    public float maxSteerAngle = 28;
 
 
 
@@ -20,18 +20,22 @@ public class ADCarMove : MonoBehaviour
     {
         speed = car.velocity.magnitude;
     }
-
+    private float rotation;
 
 
     private void FixedUpdate()
     {
+        rotation = Mathf.Clamp(rotation, -90, 90);
+        var rot = transform.localEulerAngles;
+        rot.z = rotation;
+        transform.localEulerAngles = rot;
         /// motor:
         float brok=30000;
         bool brake = false;
-        speed = car.velocity.z;
+        speed = car.velocity.magnitude;
         float qaz = Input.GetAxis("Vertical");
         float don = Input.GetAxis("Horizontal");
-        float currentTorque = maxMotorTorque;
+        
 
         //if (Input.GetKeyDown("space"))
         //{
@@ -42,9 +46,33 @@ public class ADCarMove : MonoBehaviour
         //    brake = false;
         //}
         brake = Input.GetKey("space");
-        
 
+        if (speed > 15)
+        {
+            maxSteerAngle = 20;
+        }
+        if (speed > 20)
+        {
+            maxSteerAngle = 15;
+        }
+        else if (speed > 40)
+        {
+            maxSteerAngle = 10;
+        }
+        else
+        {
+            maxSteerAngle = 30;
+        }
 
+        if (speed > 30)
+        {
+            maxMotorTorque = 100;
+        }
+        else
+        {
+            maxMotorTorque = 900;
+        }
+        float currentTorque = maxMotorTorque;
 
 
 
