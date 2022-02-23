@@ -1,49 +1,217 @@
+using System.Collections;
+
+using System.Collections.Generic;
+
 using UnityEngine;
-
 public class movement : MonoBehaviour
+
 {
-    CharacterController cont;
-    Vector3 playerVelo;
-    [SerializeField] private float playerSpeed = 0;
-    public float rotateSpeed = 30;
-    public float SimForce = 5;
+    public GameObject wheelObjectFL;
+
+    public GameObject wheelObjectFR;
+    public GameObject wheelObjectRL;
+
+    public GameObject wheelObjectRR;
+    WheelCollider WheelFL;
+    WheelCollider WheelFR;
+    WheelCollider WheelRL;
+
+    WheelCollider WheelRR;
+    Transform meshFL;
+
+    Transform meshFR;
+
+    Transform meshRL;
+
+    Transform meshRR;
+
+
+    public bool motor; // is this wheel attached to motor?
+
+    public bool steering; // does this wheel apply steer angle?
+    public float maxMotorTorque;
+
+    public float maxSteeringAngle;
+    public Transform com;
+    public bool isBrake;
+
+    public bool handBrake;
+    public bool mainBrake;
+
+
+    public float maxSpeed;
+
+    float speed;
+
+
+
     void Start()
+
     {
-        cont  = GetComponent<CharacterController>();
+
+        gameObject.GetComponent<Rigidbody>().centerOfMass = com.localPosition;
+
+
+
+        WheelFL = wheelObjectFL.GetComponent<WheelCollider>();
+        WheelFR = wheelObjectFR.GetComponent<WheelCollider>();
+        WheelRL = wheelObjectRL.GetComponent<WheelCollider>();
+        WheelRR = wheelObjectRR.GetComponent<WheelCollider>();
+
+
+
+        meshFL = wheelObjectFL.transform;
+
+        meshFR = wheelObjectFR.transform;
+
+        meshRL = wheelObjectRL.transform;
+
+        meshRR = wheelObjectRR.transform;
+    }
+    // Update is called once per frame
+    private void FixedUpdate()
+
+    {
+
+
+
+        float motor = maxMotorTorque * Input.GetAxis("Vertical");
+
+        float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
+        ApplyRotation(WheelFL, meshFL);
+
+        ApplyRotation(WheelFR, meshFR);
+
+        ApplyRotation(WheelRL, meshRL);
+
+        ApplyRotation(WheelRR, meshRR);
+
+
+
+
+        if (motor == 0)
+
+        {
+
+            WheelFL.brakeTorque = 8000;
+
+            WheelFR.brakeTorque = 8000;
+            WheelRL.brakeTorque = 8000;
+
+            WheelRR.brakeTorque = 8000;
+
+
+        }
+
+        else
+
+        {
+
+            WheelFL.brakeTorque = 0;
+
+            WheelFR.brakeTorque = 0;
+
+            WheelRL.brakeTorque = 0;
+
+            WheelRR.brakeTorque = 0;
+        }
+        WheelFL.steerAngle = steering;
+
+        WheelFR.steerAngle = steering;
+
+
+        WheelRL.motorTorque = motor;
+
+        WheelRR.motorTorque = motor;
+        if (Input.GetButton("Jump") || isBrake == true)
+
+        {
+
+            WheelRL.brakeTorque = 25000;
+
+            WheelRR.brakeTorque = 25000;
+
+        }
+        if (handBrake == true)
+
+        {
+
+            WheelRL.brakeTorque = 250000;
+
+            WheelRR.brakeTorque = 250000;
+
+            GetComponent<Rigidbody>().isKinematic = true;
+
+        }
+
+
+        if (mainBrake == true)
+
+        {
+
+            WheelRL.brakeTorque = 250000;
+
+            WheelRR.brakeTorque = 250000;
+
+        }
+
+        else
+
+        {
+
+            WheelRL.brakeTorque = 0;
+
+            WheelRR.brakeTorque = 0;
+
+        }
     }
 
 
-    void Update()
+    public void BrakeHold()
+
     {
-        if(playerSpeed!=0)
-        transform.Rotate(0, Input.GetAxis("Horizontal")*rotateSpeed*Time.deltaTime, 0);
-        playerVelo = transform.TransformDirection(Vector3.forward);
-        float move = Input.GetAxis("Vertical");
-        if(playerSpeed>0.1 && move<=0)
-        {
-            if (move == 0)
-                speedUp(10 * Time.deltaTime*-1);
-            else speedUp(40 * Time.deltaTime*-1);
-        }
-        else if(playerSpeed<-0.1 && move >= 0)
-        {
-            if (move == 0)
-                speedUp(10 * Time.deltaTime);
-            else speedUp(40 * Time.deltaTime);
-        }
-        if (move > 0 && playerSpeed<100)
-        {
-            speedUp(SimForce * Time.deltaTime);
-        }
-        else if (move < 0 && playerSpeed>-20)
-        {
-            speedUp(SimForce * Time.deltaTime * -1);
-        }
-        
-        cont.SimpleMove(playerVelo * playerSpeed);
+
+        isBrake = true;
+
     }
-    void speedUp(float force)
+    public void ReleaseBrake()
+
     {
-        playerSpeed += force;
+
+        isBrake = false;
+
+    }
+    public void MainBrakeClick()
+
+    {
+
+        mainBrake = true;
+
+    }
+    public void MainBrakeReleased()
+
+    {
+
+        mainBrake = false;
+
+    }
+
+
+    public void ApplyRotation(WheelCollider wheel, Transform visualWheel)
+
+    {
+
+        Vector3 position;
+
+        Quaternion rotation;
+
+        wheel.GetWorldPose(out position, out rotation);
+
+        visualWheel.transform.position = position;
+
+        visualWheel.transform.rotation = rotation;
+
+
+
     }
 }
