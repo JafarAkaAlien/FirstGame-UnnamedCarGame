@@ -5,7 +5,7 @@ using UnityEngine;
 public class rotation : MonoBehaviour
 {
     // Start is called before the first frame update
-    float tiltAngle=-2;
+    float tiltAngle=-200;
     
     public GameObject car;
 
@@ -16,7 +16,7 @@ public class rotation : MonoBehaviour
 
         float tiltAroundZ = Input.GetAxis("Horizontal") * tiltAngle;
        
-            transform.Rotate(Vector3.forward * tiltAroundZ);
+            transform.Rotate(Vector3.forward * tiltAroundZ*Time.deltaTime);
         
          
         
