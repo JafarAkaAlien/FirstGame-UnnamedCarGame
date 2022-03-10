@@ -13,14 +13,20 @@ public class ADCarMove : MonoBehaviour
     public List<Axinfo> teker;
     public float maxMotorTorque = 800;
     public float maxSteerAngle = 28;
-
+    AudioSource audioS;
+    float pitch;
+    float minpitch = 0.5f;
+    float maxpitch = 4;
+    public float carpitch;
 
 
     private void Start()
     {
         speed = car.velocity.magnitude;
+        audioS = GetComponent<AudioSource>();
     }
     private float rotation;
+   
 
 
     private void FixedUpdate()
@@ -35,8 +41,8 @@ public class ADCarMove : MonoBehaviour
         speed = car.velocity.magnitude;
         float qaz = Input.GetAxis("Vertical");
         float don = Input.GetAxis("Horizontal");
-        
 
+        changeSound(speed);
         //if (Input.GetKeyDown("space"))
         //{
         //    brake = true;
@@ -117,7 +123,21 @@ public class ADCarMove : MonoBehaviour
         visualWheel.transform.rotation = rotation;
     }
 
-
+    void changeSound(float speed)
+    {
+        carpitch = speed / 10;
+        if (carpitch < minpitch)
+        {
+            audioS.pitch = minpitch;
+        }
+        else if (carpitch>maxpitch){
+            audioS.pitch = maxpitch;
+        }
+        else
+        {
+            audioS.pitch = carpitch;
+        }
+    } 
 }
 
 

@@ -6,16 +6,16 @@ TerrainLayer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: surf
-  m_DiffuseTexture: {fileID: 2800000, guid: dce90e68de6658c4283db199943558d2, type: 3}
-  m_NormalMapTexture: {fileID: 2800000, guid: 73d8314cf8ba8ad49a1a6d906785e352, type: 3}
-  m_MaskMapTexture: {fileID: 0}
-  m_TileSize: {x: 50, y: 50}
+  m_Name: NewLayer
+  m_DiffuseTexture: {fileID: 2800000, guid: b2b3004e216691d439cde183088d0c21, type: 3}
+  m_NormalMapTexture: {fileID: 2800000, guid: 3075a767eae486d48bf1fd2a933d8ce6, type: 3}
+  m_MaskMapTexture: {fileID: 2800000, guid: 40978f67e17f5654d89982f1d73d01c5, type: 3}
+  m_TileSize: {x: 25, y: 25}
   m_TileOffset: {x: 0, y: 0}
-  m_Specular: {r: 0.15387452, g: 0.119215034, b: 0.1792453, a: 0}
+  m_Specular: {r: 0, g: 0, b: 0, a: 0}
   m_Metallic: 0
   m_Smoothness: 0
-  m_NormalScale: 0.2
+  m_NormalScale: 1
   m_DiffuseRemapMin: {x: 0, y: 0, z: 0, w: 0}
   m_DiffuseRemapMax: {x: 1, y: 1, z: 1, w: 1}
   m_MaskMapRemapMin: {x: 0, y: 0, z: 0, w: 0}
