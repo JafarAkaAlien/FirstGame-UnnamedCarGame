@@ -7,7 +7,8 @@ public class ADCarMove : MonoBehaviour
 {
   
     public Rigidbody car;
-
+    public ParticleSystem p1;
+    public ParticleSystem p2;
     public float speed;
 
     public List<Axinfo> teker;
@@ -31,17 +32,18 @@ public class ADCarMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rotation = Mathf.Clamp(rotation, -90, 90);
-        var rot = transform.localEulerAngles;
-        rot.z = rotation;
-        transform.localEulerAngles = rot;
+
+        //rotation = Mathf.Clamp(rotation, -30, 30);
+        //var rot = transform.localEulerAngles;
+        //rot.z = rotation;
+        //transform.localEulerAngles = rot;
         /// motor:
         float brok=30000;
         bool brake = false;
         speed = car.velocity.magnitude;
         float qaz = Input.GetAxis("Vertical");
         float don = Input.GetAxis("Horizontal");
-
+        
         changeSound(speed);
         //if (Input.GetKeyDown("space"))
         //{
@@ -52,39 +54,57 @@ public class ADCarMove : MonoBehaviour
         //    brake = false;
         //}
         brake = Input.GetKey("space");
+        if (Input.GetKeyDown("b"))
+        {
+            Flip();
+        }
 
-        if (speed > 15)
+        if (speed > 15 && speed<20)
         {
             maxSteerAngle = 20;
         }
-        if (speed > 20)
+     
+        else if (speed >= 20 && speed<40)
         {
             maxSteerAngle = 15;
         }
-        else if (speed > 40)
+        else if (speed >= 40)
         {
             maxSteerAngle = 10;
         }
         else
         {
+            
             maxSteerAngle = 30;
         }
 
-        if (speed > 30)
+        if (speed > 40)
         {
             maxMotorTorque = 100;
         }
         else
         {
-            maxMotorTorque = 900;
+            
+            maxMotorTorque = 1300;
         }
         float currentTorque = maxMotorTorque;
 
-
+        if (speed > 15)
+        {
+            p1.Play();
+            p2.Play();
+        }
+        else
+        {
+            p1.Clear();
+            p1.Pause();
+            p2.Clear();
+            p2.Pause();
+        }
 
         float motor = currentTorque * qaz;
         float steer = maxSteerAngle * Input.GetAxis("Horizontal");
-
+    
         foreach (Axinfo t in teker)
         {
             if (t.motor)
@@ -137,7 +157,13 @@ public class ADCarMove : MonoBehaviour
         {
             audioS.pitch = carpitch;
         }
-    } 
+    }
+    void Flip()
+    {
+        float y = transform.eulerAngles.y;
+        transform.rotation = Quaternion.Euler(0,y,0);
+
+    }
 }
 
 
